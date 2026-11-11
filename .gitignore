@@ -1,0 +1,10 @@
+# Logs and local run output from the utility (created in C:\GamingConsoleOS on the PC)
+*.log
+removed-apps.txt
+utility-log.txt
+debloat-log.txt
+
+# Windows / macOS junk
+Thumbs.db
+Desktop.ini
+.DS_Store
