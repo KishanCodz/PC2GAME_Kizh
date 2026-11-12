@@ -285,7 +285,7 @@ $DebloatApps = @(
 
 # ------------------------------------------------------------ the window
 $form = New-Object System.Windows.Forms.Form
-$form.Text = 'Gaming Console OS Utility v2.0 - Boot Straight to Xbox'
+$form.Text = 'Gaming Console OS Utility v2.1 - Boot Straight to Xbox'
 $form.Size = New-Object System.Drawing.Size(920, 790)
 $form.StartPosition = 'CenterScreen'
 $form.Font = New-Object System.Drawing.Font('Segoe UI', 9)
@@ -853,6 +853,6 @@ $tabUndo.Controls.Add($btnRamUndo)
 Refresh-RebloatList
 
 # ------------------------------------------------------------ go
-Log 'Gaming Console OS Utility v2.0 started.'
+Log 'Gaming Console OS Utility v2.1 started.'
 Log 'Start on Tab 1: create a system restore point FIRST. Then Tab 2 Boot, Tab 3 Debloat, Tab 4 Tweaks. Tab 5 reverses anything.'
 [void]$form.ShowDialog()
