@@ -4,42 +4,50 @@ Turn a normal Windows 11 mini PC (like a Lenovo Tiny) into a living-room gaming 
 
 **Power on → no desktop → straight into Xbox.**
 
-One PowerShell file. One window. Tick boxes, click Apply — the same style as Chris Titus Tech's WinUtil, but built for one job: a Game Pass console PC.
+One PowerShell file. One window. Tick the boxes you want, click Apply. Built for one job: a Game Pass console PC.
 
 ![status](https://img.shields.io/badge/Windows-11-blue) ![powershell](https://img.shields.io/badge/PowerShell-5.1%2B-blue) ![license](https://img.shields.io/badge/License-MIT-green)
-
-## What it does
-
-The utility window has 4 tabs:
-
-### 1. Boot to Xbox (the main one)
-Two layers, use both:
-- **Official Xbox Mode** — walks you through Settings > Gaming > Full screen experience: set Xbox as your home app and turn on "Enter full screen experience on startup". Windows then boots into the full-screen Xbox shell and holds back background processes (about 1–2 GB of RAM freed vs. the desktop).
-- **Fallback launcher (installed by the utility, works on any PC)** — a sign-in task that opens the Xbox app automatically 5 seconds after sign-in, skips the lock screen, and links you to Microsoft's official Autologon tool for password-free sign-in. The utility itself never asks for or stores your password.
-
-### 2. Debloat
-Create a restore point, then tick and remove apps from a safe list only (Bing News/Weather, Solitaire, Clipchamp, Teams personal, Widgets board, stubs, and similar).
-
-**Protected — this tool will never remove or disable them:** Xbox app, Xbox Game Bar, Gaming Services, Xbox Live services, Microsoft Store, Windows Update, Microsoft Defender, BITS, .NET and Visual C++ runtimes, and the pagefile. Game Pass needs all of them.
-
-### 3. Tweaks
-Telemetry services off, Widgets / Copilot button / app suggestions / advertising ID off, Game Mode on, background game recording off, hardware GPU scheduling, High Performance power plan, stop Edge running in the background, and a few dead services (Remote Registry, Retail Demo, Fax) disabled.
-
-### 4. Undo
-Remove the boot task, turn services back on, Balanced power plan back, open System Restore. Everything the tool does is logged to `C:\GamingConsoleOS`, and removed app names are saved there so you can reinstall them from the Microsoft Store.
 
 ## How to run it
 
 1. Download `GamingConsoleOS-Utility.ps1` (green **Code** button > Download ZIP, or clone this repo) and put it on the PC's Desktop.
-2. Right-click Start > **Terminal (Admin)**.
-3. Run:
+2. Right-click Start > **Terminal (Admin)** / **Windows PowerShell (Admin)**.
+3. Paste this one command:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 powershell -STA -ExecutionPolicy Bypass -File "$env:USERPROFILE\Desktop\GamingConsoleOS-Utility.ps1"
 ```
 
-If you forget Admin, the script restarts itself as Admin. Work through the tabs in order: **Boot to Xbox → Debloat (restore point first) → Tweaks**, then restart and pick up the controller.
+Change the path if you saved the file somewhere else. If you forget Admin, the script restarts itself as Admin. The utility window opens — there are no other steps to run.
+
+## What it does
+
+Work through the 5 tabs in order:
+
+### 1. Start Here — system restore point first
+Create a system restore point before anything changes. If anything goes wrong later, System Restore puts the whole PC back to that moment. Debloat and Tweaks also ask for a restore point automatically before they run. This tab also checks the Xbox app is ready and shows your RAM use.
+
+### 2. Boot to Xbox (the main one)
+Two layers, use both:
+- **Official Xbox Mode** — walks you through Settings > Gaming > Full screen experience: set Xbox as your home app and turn on "Enter full screen experience on startup". Windows then boots into the full-screen Xbox shell and holds back background processes (about 1–2 GB of RAM freed vs. the desktop).
+- **Fallback launcher (installed by the utility, works on any PC)** — a sign-in task that opens the Xbox app automatically 5 seconds after sign-in, skips the lock screen, and links you to Microsoft's official Autologon tool for password-free sign-in. The utility itself never asks for or stores your password.
+
+### 3. Debloat
+Tick the apps to remove — every app is its own tick box, the recommended ones are already ticked, and there are Tick all / Untick all / Tick recommended buttons. The list covers the usual bloat (Bing apps, Solitaire, Clipchamp, Teams personal, Widgets board, Cortana, Dev Home, the new Outlook, stubs like Candy Crush / TikTok / Disney+, and more), plus optional extras that are unticked by default (Netflix, Media Player, Sticky Notes, Clock, Camera, and similar — only tick those if you really do not use them).
+
+Removals are for your user only, and the built-in (provisioned) copy of each app is kept on the PC — that is what makes Tab 5 able to put an app back.
+
+**Protected — this tool will never remove or disable them:** Xbox app, Xbox Game Bar, Gaming Services, Xbox Live services, Microsoft Store, Windows Update, Microsoft Defender, BITS, .NET and Visual C++ runtimes, and the pagefile. Game Pass needs all of them.
+
+### 4. Tweaks
+Every tweak is its own tick box: telemetry and other dead services off (each service listed separately, Print Spooler included as an unticked option), Widgets / Copilot button / search highlights off, advertising ID and app suggestions off, Game Mode on, background game recording off, hardware GPU scheduling, High Performance power plan, no sleep while plugged in, stop Edge running in the background, and more.
+
+### 5. Rebloat / Undo — reverse anything
+- **Rebloat:** removed apps are listed from the saved record (`C:\GamingConsoleOS\removed-apps.txt`). Tick the ones you want back and click REBLOAT — the utility re-registers the app from the copy kept on the PC, uses winget where it has a known ID, or opens the Microsoft Store page for that app.
+- **Undo settings:** tick boxes to put settings back — boot task removed, lock screen back, services back on, buttons and suggestions back, power plan back to Balanced, and more.
+- **Full go-back:** one button opens System Restore, where the "GamingConsoleOS - before changes" point undoes everything at once.
+
+Everything the tool does is logged to `C:\GamingConsoleOS\utility-log.txt`.
 
 ## What you need
 
@@ -60,17 +68,17 @@ This tool will not double your FPS. It gives your games back the RAM and CPU tim
 
 - No ready-made Windows ISOs. No ViVeTool / registry hacks to force Xbox Mode — the feature IDs change between builds, it is unsupported, and updates can break it. If the Xbox Mode setting hasn't reached your PC yet, the fallback launcher still boots you straight into Xbox.
 - No downloads of code from the internet. No telemetry added. Read the one `.ps1` file yourself — it is the whole tool.
-- Made a mistake? Tab 4 (Undo) and System Restore have you covered.
+- Made a mistake? Tab 5 (Rebloat / Undo) and System Restore have you covered.
 
 ## Roadmap
 
-- [ ] Tab 5 — Install: Steam, Playnite, Epic, RetroArch and more via winget, WinUtil-style
+- [ ] Tab 6 — Install: Steam, Playnite, Epic, RetroArch and more via winget
 - [ ] Export / import your tick-box choices as a preset file
 - [ ] Controller-first big-picture launcher option (Playnite Fullscreen as home app)
 
 ## Credits and disclaimer
 
-Built by Kishan. Inspired by the one-window, tick-box style of [Chris Titus Tech's WinUtil](https://github.com/ChrisTitusTech/winutil) — this is an independent project, not affiliated with Chris Titus Tech, Microsoft, Xbox, or Lenovo. Xbox, Windows and Game Pass are trademarks of Microsoft.
+Built by Kishan. This is an independent project, not affiliated with Microsoft, Xbox, or Lenovo. Xbox, Windows and Game Pass are trademarks of Microsoft.
 
 ## License
 
