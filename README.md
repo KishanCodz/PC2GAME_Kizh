@@ -10,15 +10,19 @@ One PowerShell file. One window. Tick the boxes you want, click Apply. Built for
 
 ## How to run it
 
-1. Download `GamingConsoleOS-Utility.ps1` (green **Code** button > Download ZIP, or clone this repo) and put it on the PC's Desktop.
-2. Right-click Start > **Terminal (Admin)** / **Windows PowerShell (Admin)**.
-3. Paste this one command:
+Easiest way — nothing to download or save. Open **Terminal** / **Windows PowerShell** (right-click Start), paste this ONE line, and press Enter:
+
+```powershell
+irm "https://raw.githubusercontent.com/KishanCodz/PC2GAME_Kizh/main/GamingConsoleOS-Utility.ps1" | iex
+```
+
+That pulls the latest version straight from this repo and opens the utility window. If you did not open PowerShell as Admin, the script restarts itself as Admin — just click **Yes** on the Windows prompt.
+
+Or run it from a saved file: download `GamingConsoleOS-Utility.ps1` to the Desktop and run:
 
 ```powershell
 powershell -STA -ExecutionPolicy Bypass -File "$env:USERPROFILE\Desktop\GamingConsoleOS-Utility.ps1"
 ```
-
-Change the path if you saved the file somewhere else. If you forget Admin, the script restarts itself as Admin. The utility window opens — there are no other steps to run.
 
 ## What it does
 
